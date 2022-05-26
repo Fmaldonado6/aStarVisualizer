@@ -86,8 +86,8 @@ function aStar(graph, start, target) {
       }
     }
   }
-  //Si el ciclo termina regresamos null
-  return null;
+  //Si el ciclo termina regresamos la lista de nodos cerrados
+  return closedList;
 }
 
 //Distancia de Manhattan
