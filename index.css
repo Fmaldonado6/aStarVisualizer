@@ -1,0 +1,64 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.grid {
+  margin-top: 20px;
+  width: 100%;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: auto;
+}
+
+.buttons-container {
+  display: flex;
+  overflow: auto;
+}
+
+.buttons-container button {
+  margin-right: 20px;
+  border-radius: 20px;
+}
+
+.restart {
+  margin-left: auto;
+}
+
+.grid-row {
+  width: 30px;
+  height: 30px;
+  background-color: rgb(245, 245, 245);
+  border: 2px solid rgba(8, 8, 8, 0.137);
+  transition: background-color 0.3s ease;
+}
+
+.initial {
+  background-color: #69ca6c;
+}
+
+.target {
+  background-color: rgb(207, 82, 82);
+}
+
+.wall {
+  background-color: rgb(59, 59, 59);
+}
+
+.moreTime {
+  background-color: rgba(235, 68, 104, 0.438);
+}
+
+.grid-col {
+  display: flex;
+}
+
+.visited {
+  background-color: #5463c9;
+}
+
+.shortest {
+  background-color: #f8bb59;
+}

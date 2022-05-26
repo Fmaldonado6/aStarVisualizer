@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>A*</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+    <link href="index.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="container">
+      <h3>A*</h3>
+
+      <div class="buttons-container">
+        <button id="setInitial" class="btn red lighten-3">Inicio</button>
+        <button id="setTarget" class="btn red lighten-1">Destino</button>
+        <button id="setWall" class="btn red lighten-1">Pared</button>
+        <button id="setMoreTime" class="btn red lighten-1">+10</button>
+        <button id="deleteButton" class="btn red lighten-1">Eliminar</button>
+
+        <button id="restart" class="btn restart red lighten-1">
+          Reiniciar
+        </button>
+        <button id="button" class="btn start red lighten-1">Empezar</button>
+      </div>
+
+      <div id="grid" class="grid"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="graph.js"></script>
+    <script src="a_star.js"></script>
+    <script src="index.js"></script>
+  </body>
+</html>
