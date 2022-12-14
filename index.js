@@ -8,6 +8,7 @@ const deleteButton = document.getElementById("deleteButton");
 const fileInput = document.getElementById("file");
 const restart = document.getElementById("restart");
 const generateMazeButton = document.getElementById("generateMaze");
+const removePathButton = document.getElementById("removePath");
 let gridWidth = Math.floor(grid.offsetWidth / 30);
 let gridHeight = Math.floor(grid.offsetHeight / 30);
 let graph = new Graph(gridWidth, gridHeight);
@@ -57,11 +58,15 @@ generateMazeButton.onclick = () => {
   generateMaze();
 };
 
-restart.onclick = () => {
+restart.onclick = async () => {
   restartMatrix();
   removeInitial();
+  await removePath();
+  await removeMapElements();
+};
+
+removePathButton.onclick = async () => {
   removePath();
-  removeMapElements();
 };
 
 //------------------------------------------------------------------------------
@@ -246,22 +251,28 @@ function removeInitial() {
   document.querySelector(`.target`)?.classList.remove("target");
 }
 
-function removePath() {
-  document
-    .querySelectorAll(".visited")
-    ?.forEach((e) => e.classList.remove("visited"));
-  document
-    .querySelectorAll(".shortest")
-    ?.forEach((e) => e.classList.remove("shortest"));
+async function removePath() {
+  const elements = [
+    ...document.querySelectorAll(".visited"),
+    ...document.querySelectorAll(".shortest"),
+  ];
+
+  for (let element of elements) {
+    element.className = "grid-row";
+    await delay(0.025);
+  }
 }
 
-function removeMapElements() {
-  document
-    .querySelectorAll(".wall")
-    ?.forEach((e) => e.classList.remove("wall"));
-  document
-    .querySelectorAll(".moreTime")
-    ?.forEach((e) => e.classList.remove("moreTime"));
+async function removeMapElements() {
+  const elements = [
+    ...document.querySelectorAll(".wall"),
+    ...document.querySelectorAll(".moreTime"),
+  ];
+
+  for (let element of elements) {
+    element.className = "grid-row";
+    await delay(0.025);
+  }
 }
 
 function selectMode(newMode, button) {
