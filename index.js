@@ -7,6 +7,7 @@ const setMoreTime = document.getElementById("setMoreTime");
 const deleteButton = document.getElementById("deleteButton");
 const fileInput = document.getElementById("file");
 const restart = document.getElementById("restart");
+const generateMazeButton = document.getElementById("generateMaze");
 let gridWidth = Math.floor(grid.offsetWidth / 30);
 let gridHeight = Math.floor(grid.offsetHeight / 30);
 let graph = new Graph(gridWidth, gridHeight);
@@ -50,6 +51,10 @@ setMoreTime.onclick = () => {
 
 deleteButton.onclick = () => {
   selectMode(Modes.delete, deleteButton);
+};
+
+generateMazeButton.onclick = () => {
+  generateMaze();
 };
 
 restart.onclick = () => {
@@ -190,6 +195,48 @@ function restartMatrix() {
     for (let j = 0; j < gridWidth; j++) {
       graph.addNode(new Node(nodeId++, j, i));
     }
+  }
+}
+
+async function generateMaze() {
+  const height = Math.ceil((gridHeight - 2) / 2);
+  const width = Math.ceil((gridWidth - 2) / 2);
+
+  const maze = generateGrid(width, height);
+  const steps = [];
+  backtracking(0, 0, maze, steps);
+
+  for (let i = 0; i < gridWidth; i++) {
+    for (let j = 0; j < gridHeight; j++) {
+      const node = graph.getNode(i, j);
+      node.isWall = true;
+      const gridCell = document.getElementById(node.id);
+      gridCell.className = "grid-row wall";
+    }
+    await delay(5);
+  }
+
+  for (let step of steps) {
+    const cell = step.val ? step.val : maze[step.y][step.x];
+
+    const realX = step.x * 2 + 1;
+    const realY = step.y * 2 + 1;
+
+    const node = graph.getNode(realX, realY);
+    node.isWall = false;
+    const nodeCell = document.getElementById(node.id);
+    nodeCell.className = "grid-row";
+
+    const dx = realX + DX[cell];
+    const dy = realY + DY[cell];
+
+    if (dx <= 0 || dx >= gridWidth || dy <= 0 || dy >= gridHeight) continue;
+
+    const pathNode = graph.getNode(dx, dy);
+    pathNode.isWall = false;
+    const pathCell = document.getElementById(pathNode.id);
+    pathCell.className = "grid-row";
+    await delay(5);
   }
 }
 
