@@ -28,10 +28,12 @@ let drag = false;
 let initalNode;
 let finalNode;
 
+let executionQueue = [];
+
 //Configuración de los botones en la interfaz----------------------------
 
 startButton.onclick = () => {
-  start();
+  executionQueue.unshift(start);
 };
 
 setInitialButton.onclick = () => {
@@ -55,26 +57,44 @@ deleteButton.onclick = () => {
 };
 
 generateMazeButton.onclick = () => {
-  generateMaze();
+  executionQueue.unshift(generateMaze);
 };
 
 restart.onclick = async () => {
+  executionQueue.unshift(restartMaze);
+};
+
+removePathButton.onclick = async () => {
+  executionQueue.unshift(removePath);
+};
+
+async function restartMaze() {
+  initalNode = null;
+  finalNode = null;
   restartMatrix();
   removeInitial();
   await removePath();
   await removeMapElements();
-};
-
-removePathButton.onclick = async () => {
-  removePath();
-};
+}
 
 //------------------------------------------------------------------------------
+
+async function loop() {
+  if (executionQueue.length != 0) {
+    const nextExecution = executionQueue.pop();
+    await nextExecution();
+  }
+
+  requestAnimationFrame(loop);
+}
 
 //Punto de inicio del programa
 
 async function start() {
   await removePath();
+
+  if (initalNode == null || finalNode == null) return;
+
   //Se obtiene el resultado del algoritmo
   const result = aStar(graph, initalNode, finalNode);
   //Se reconstruye el camino más corto
@@ -83,6 +103,7 @@ async function start() {
   //Se recorre el resultado para cambiar el color de la celda
   //a azul
   for (let node of result) {
+    if (executionQueue.length > 0) return;
     if (node.id == initalNode.id) continue;
     const cell = document.getElementById(node.id);
     cell.classList.add("visited");
@@ -92,6 +113,7 @@ async function start() {
   //Se recorre el camino más corto para cambiar el color de la celda
   //a naranja
   for (let node of shortestPath) {
+    if (executionQueue.length > 0) return;
     if (node.id == initalNode.id || node.id == finalNode.id) continue;
     const cell = document.getElementById(node.id);
     cell.classList.add("shortest");
@@ -212,6 +234,7 @@ async function generateMaze() {
   backtracking(0, 0, maze, steps);
 
   for (let i = 0; i < gridWidth; i++) {
+    if (executionQueue.length > 0) return;
     for (let j = 0; j < gridHeight; j++) {
       const node = graph.getNode(i, j);
       node.isWall = true;
@@ -222,6 +245,7 @@ async function generateMaze() {
   }
 
   for (let step of steps) {
+    if (executionQueue.length > 0) return;
     const cell = step.val ? step.val : maze[step.y][step.x];
 
     const realX = step.x * 2 + 1;
@@ -297,3 +321,4 @@ function delay(ms) {
 }
 
 renderGrid();
+loop();
