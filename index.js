@@ -30,7 +30,6 @@ let finalNode;
 
 let executionQueue = [];
 
-
 startButton.onclick = () => {
   executionQueue.unshift(start);
 };
@@ -56,8 +55,8 @@ deleteButton.onclick = () => {
 };
 
 generateMazeButton.onclick = () => {
-  initalNode = null;
-  finalNode = null;
+  restartMatrix();
+  removeInitial();
   executionQueue.unshift(generateMaze);
 };
 
@@ -70,14 +69,11 @@ removePathButton.onclick = async () => {
 };
 
 async function restartMaze() {
-  initalNode = null;
-  finalNode = null;
   restartMatrix();
   removeInitial();
   await removePath();
   await removeMapElements();
 }
-
 
 async function loop() {
   if (executionQueue.length != 0) {
@@ -88,14 +84,16 @@ async function loop() {
   requestAnimationFrame(loop);
 }
 
-
 async function start() {
   await removePath();
 
   if (initalNode == null || finalNode == null) return;
 
+  console.log("Calculating...");
   const result = aStar(graph, initalNode, finalNode);
+  console.log("Getting shortest path...");
   const shortestPath = getShortestPath(result?.pop());
+  console.log("Done!");
 
   for (let node of result) {
     if (executionQueue.length > 0) return;
@@ -252,6 +250,8 @@ async function generateMaze() {
 }
 
 function removeInitial() {
+  initalNode = null
+  finalNode = null
   document.querySelector(`.initial`)?.classList.remove("initial");
   document.querySelector(`.target`)?.classList.remove("target");
 }
