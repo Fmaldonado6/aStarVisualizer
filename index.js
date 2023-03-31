@@ -30,7 +30,6 @@ let finalNode;
 
 let executionQueue = [];
 
-//Configuración de los botones en la interfaz----------------------------
 
 startButton.onclick = () => {
   executionQueue.unshift(start);
@@ -79,7 +78,6 @@ async function restartMaze() {
   await removeMapElements();
 }
 
-//------------------------------------------------------------------------------
 
 async function loop() {
   if (executionQueue.length != 0) {
@@ -90,20 +88,15 @@ async function loop() {
   requestAnimationFrame(loop);
 }
 
-//Punto de inicio del programa
 
 async function start() {
   await removePath();
 
   if (initalNode == null || finalNode == null) return;
 
-  //Se obtiene el resultado del algoritmo
   const result = aStar(graph, initalNode, finalNode);
-  //Se reconstruye el camino más corto
   const shortestPath = getShortestPath(result?.pop());
 
-  //Se recorre el resultado para cambiar el color de la celda
-  //a azul
   for (let node of result) {
     if (executionQueue.length > 0) return;
     if (node.id == initalNode.id) continue;
@@ -112,8 +105,6 @@ async function start() {
     await delay(10);
   }
 
-  //Se recorre el camino más corto para cambiar el color de la celda
-  //a naranja
   for (let node of shortestPath) {
     if (executionQueue.length > 0) return;
     if (node.id == initalNode.id || node.id == finalNode.id) continue;
@@ -138,10 +129,7 @@ function renderGrid() {
       cell.id = nodeId;
       cell.x = j;
       cell.y = i;
-      //---------------------------------------
 
-      //Detectar clics y movimientos de mouse en la celda
-      //para poder dibujar y cambiar el grafo
       cell.addEventListener("mousemove", (e) => {
         e.preventDefault();
         if (drag) onCellClick(cell, j, i);
@@ -157,21 +145,15 @@ function renderGrid() {
         onCellClick(cell, j, i);
       });
 
-      //-------------------------------------------------------
-
-      //Se añade a la pantalla
       col.appendChild(cell);
 
-      //Se añade a la representación del grafo
       graph.addNode(new Node(nodeId++, j, i));
     }
-    //Se añade la columna a la pantalla
     grid.appendChild(col);
   }
 }
 
 function onCellClick(row, x, y) {
-  //Al hacer clic en una celda configurarla dependiendo del modo seleccionado
   const className = Modes.classNames[mode];
   const currentNode = graph.getNode(x, y);
   resetNode(currentNode);
@@ -212,13 +194,11 @@ function deleteMapElement(node) {
 }
 
 function calculateGridSize() {
-  //Calcular el tamaño de la matriz en base al tamaño de la pantalla
   gridWidth = Math.floor(grid.offsetWidth / 30);
   gridHeight = Math.floor(grid.offsetHeight / 30);
 }
 
 function restartMatrix() {
-  //Reiniciar matriz
   let nodeId = 0;
   for (let i = 0; i < gridHeight; i++) {
     for (let j = 0; j < gridWidth; j++) {
@@ -271,7 +251,6 @@ async function generateMaze() {
   }
 }
 
-//Configuración de elementos visuales
 function removeInitial() {
   document.querySelector(`.initial`)?.classList.remove("initial");
   document.querySelector(`.target`)?.classList.remove("target");
@@ -334,7 +313,6 @@ document.addEventListener("touchmove", (e) => {
   if (cell.x != undefined && cell.y != undefined && drag)
     onCellClick(cell, cell.x, cell.y);
 });
-//------------------------------------------------------------
 
 function delay(ms) {
   return new Promise((resolve, reject) => {

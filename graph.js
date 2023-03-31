@@ -33,12 +33,10 @@ class Graph {
     }
   }
 
-  //Se añade un nodo nuevo
   addNode(node) {
     this.list[node.y][node.x] = node;
   }
 
-  //Obtener vecinos del nodo
   getNodeNeighbors(node) {
     const neighbors = [];
 
@@ -60,13 +58,11 @@ class Graph {
     return neighbors;
   }
 
-  //Se obtiene un nodo en base a sus coordenadas
   getNode(x, y) {
     return this.list[y][x];
   }
 }
 
-//Genera una copia del grafo para no afectar al original
 function copyGraph(graph) {
   const newGraph = Object.assign(
     new Graph(),
@@ -77,7 +73,6 @@ function copyGraph(graph) {
   return newGraph;
 }
 
-//Odenar cola en base al valor de f
 function sortQueue(queue) {
   return queue.sort((a, b) => a.f - b.f);
 }
