@@ -315,6 +315,25 @@ document.addEventListener("mouseup", () => {
   drag = false;
 });
 
+grid.addEventListener("touchstart", (e) => {
+  e.preventDefault();
+  drag = true;
+  const { clientX, clientY } = e.changedTouches[0];
+  const cell = document.elementFromPoint(clientX, clientY);
+  if (cell.x != undefined && cell.y != undefined && drag)
+    onCellClick(cell, cell.x, cell.y);
+});
+
+document.addEventListener("touchend", (e) => {
+  drag = false;
+});
+
+document.addEventListener("touchmove", (e) => {
+  const { clientX, clientY } = e.changedTouches[0];
+  const cell = document.elementFromPoint(clientX, clientY);
+  if (cell.x != undefined && cell.y != undefined && drag)
+    onCellClick(cell, cell.x, cell.y);
+});
 //------------------------------------------------------------
 
 function delay(ms) {
