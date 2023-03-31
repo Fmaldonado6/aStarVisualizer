@@ -57,6 +57,8 @@ deleteButton.onclick = () => {
 };
 
 generateMazeButton.onclick = () => {
+  initalNode = null;
+  finalNode = null;
   executionQueue.unshift(generateMaze);
 };
 
@@ -282,7 +284,8 @@ async function removePath() {
   ];
 
   for (let element of elements) {
-    element.className = "grid-row";
+    element.classList.remove("visited");
+    element.classList.remove("shortest");
     await delay(0.025);
   }
 }
