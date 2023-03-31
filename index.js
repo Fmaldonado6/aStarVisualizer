@@ -89,11 +89,8 @@ async function start() {
 
   if (initalNode == null || finalNode == null) return;
 
-  console.log("Calculating...");
   const result = aStar(graph, initalNode, finalNode);
-  console.log("Getting shortest path...");
   const shortestPath = getShortestPath(result?.pop());
-  console.log("Done!");
 
   for (let node of result) {
     if (executionQueue.length > 0) return;

@@ -3,7 +3,6 @@ function getShortestPath(finishNode) {
   const nodesInShortestPath = [];
   let currentNode = finishNode;
   while (currentNode != null) {
-    console.log(currentNode)
     nodesInShortestPath.unshift(currentNode);
     currentNode = currentNode.previous;
   }
