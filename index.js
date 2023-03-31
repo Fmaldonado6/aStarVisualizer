@@ -74,7 +74,7 @@ removePathButton.onclick = async () => {
 //Punto de inicio del programa
 
 async function start() {
-  removePath();
+  await removePath();
   //Se obtiene el resultado del algoritmo
   const result = aStar(graph, initalNode, finalNode);
   //Se reconstruye el camino más corto
